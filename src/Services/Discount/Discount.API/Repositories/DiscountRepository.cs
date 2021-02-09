@@ -32,8 +32,8 @@ namespace Basket.API.Repositories
 
             var affected =
                 await connection.ExecuteAsync
-                    ("INSERT INTO Coupon (ProductName, Description, Value) VALUES (@ProductName, @Description, @Value)",
-                            new { ProductName = coupon.ProductName, Description = coupon.Description, Value = coupon.Value });
+                    ("INSERT INTO Coupon (ProductName, Description, Amount) VALUES (@ProductName, @Description, @Amount)",
+                            new { ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount });
 
             if (affected == 0)
                 return false;
@@ -46,8 +46,8 @@ namespace Basket.API.Repositories
             using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
 
             var affected = await connection.ExecuteAsync
-                    ("UPDATE Coupon SET ProductName=@ProductName, Description = @Description, Value = @Value WHERE Id = @Id",
-                            new { ProductName = coupon.ProductName, Description = coupon.Description, Value = coupon.Value, Id = coupon.Id });
+                    ("UPDATE Coupon SET ProductName=@ProductName, Description = @Description, Amount = @Amount WHERE Id = @Id",
+                            new { ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount, Id = coupon.Id });
 
             if (affected == 0)
                 return false;
