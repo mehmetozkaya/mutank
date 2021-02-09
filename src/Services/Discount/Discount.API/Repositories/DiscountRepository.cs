@@ -17,12 +17,12 @@ namespace Basket.API.Repositories
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }       
 
-        public async Task<Coupon> GetDiscount(string productId)
+        public async Task<Coupon> GetDiscount(string productName)
         {
             using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
             
             var coupon = await connection.QueryFirstAsync<Coupon>
-                ("SELECT * FROM Coupon WHERE ProductId = @ProductId", new { ProductId = productId });
+                ("SELECT * FROM Coupon WHERE ProductName = @ProductName", new { ProductName = productName });
             return coupon;
         }
 
@@ -31,8 +31,9 @@ namespace Basket.API.Repositories
             using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
 
             var affected =
-                await connection.ExecuteAsync("INSERT INTO Coupon (Id, ProductId, Name, Value) VALUES (@Id, @ProductId, @Name, @Value)",
-                            new { Id = coupon.Id, ProductId = coupon.ProductId, Name = coupon.Name, Value = coupon.Value });
+                await connection.ExecuteAsync
+                    ("INSERT INTO Coupon (ProductName, Description, Value) VALUES (@ProductName, @Description, @Value)",
+                            new { ProductName = coupon.ProductName, Description = coupon.Description, Value = coupon.Value });
 
             if (affected == 0)
                 return false;
@@ -44,8 +45,9 @@ namespace Basket.API.Repositories
         {
             using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
 
-            var affected = await connection.ExecuteAsync("UPDATE Coupon SET Name = @Name, Value = @Value WHERE Id = @Id",
-                            new { Name = coupon.Name, Value = coupon.Value, Id = coupon.Id });
+            var affected = await connection.ExecuteAsync
+                    ("UPDATE Coupon SET ProductName=@ProductName, Description = @Description, Value = @Value WHERE Id = @Id",
+                            new { ProductName = coupon.ProductName, Description = coupon.Description, Value = coupon.Value, Id = coupon.Id });
 
             if (affected == 0)
                 return false;
@@ -53,12 +55,12 @@ namespace Basket.API.Repositories
             return true;
         }
 
-        public async Task<bool> DeleteDiscount(string productId)
+        public async Task<bool> DeleteDiscount(string productName)
         {
             using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
 
-            var affected = await connection.ExecuteAsync("DELETE FROM Coupon WHERE ProductId = @ProductId",
-                new { ProductId = productId });
+            var affected = await connection.ExecuteAsync("DELETE FROM Coupon WHERE ProductName = @ProductName",
+                new { ProductName = productName });
 
             if (affected == 0)
                 return false;

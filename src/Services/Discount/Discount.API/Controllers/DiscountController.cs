@@ -17,12 +17,12 @@ namespace Discount.API.Controllers
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
-
-        [HttpGet]
+        
+        [HttpGet("{productName}", Name = "GetDiscount")]
         [ProducesResponseType(typeof(Coupon), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Coupon>> GetDiscount(string productId)
+        public async Task<ActionResult<Coupon>> GetDiscount(string productName)
         {
-            var discount = await _repository.GetDiscount(productId);
+            var discount = await _repository.GetDiscount(productName);
             return Ok(discount);
         }
 
@@ -30,7 +30,8 @@ namespace Discount.API.Controllers
         [ProducesResponseType(typeof(Coupon), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<Coupon>> CreateDiscount([FromBody] Coupon coupon)
         {
-            return Ok(await _repository.CreateDiscount(coupon));
+            await _repository.CreateDiscount(coupon);
+            return CreatedAtRoute("GetDiscount", new { productName = coupon.ProductName }, coupon);
         }
 
         [HttpPut]
@@ -40,11 +41,11 @@ namespace Discount.API.Controllers
             return Ok(await _repository.UpdateDiscount(coupon));
         }
 
-        [HttpDelete("{productId:length(24)}")]
+        [HttpDelete]
         [ProducesResponseType(typeof(void), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<bool>> DeleteDiscount(string productId)
+        public async Task<ActionResult<bool>> DeleteDiscount(string productName)
         {
-            return Ok(await _repository.DeleteDiscount(productId));
+            return Ok(await _repository.DeleteDiscount(productName));
         }
     }
 }

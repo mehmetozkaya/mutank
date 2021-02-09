@@ -34,16 +34,16 @@ namespace Discount.API.Extensions
                     command.ExecuteNonQuery();
 
                     command.CommandText = @"CREATE TABLE Coupon(Id SERIAL PRIMARY KEY, 
-                                                                ProductId VARCHAR(24) NOT NULL,
-                                                                Name TEXT,
+                                                                ProductName VARCHAR(24) NOT NULL,
+                                                                Description TEXT,
                                                                 Value INT)";
                     command.ExecuteNonQuery();
 
 
-                    command.CommandText = "INSERT INTO Coupon(ProductId, Name, Value) VALUES('60210c2a1556459e153f0554', 'IPhone Discount', 150);";
+                    command.CommandText = "INSERT INTO Coupon(ProductName, Description, Value) VALUES('IPhone X', 'IPhone Discount', 150);";
                     command.ExecuteNonQuery();
 
-                    command.CommandText = "INSERT INTO Coupon(ProductId, Name, Value) VALUES('60210c2a1556459e153f0555', 'Samsung Discount', 100);";
+                    command.CommandText = "INSERT INTO Coupon(ProductName, Description, Value) VALUES('Samsung 10', 'Samsung Discount', 100);";
                     command.ExecuteNonQuery();
 
                     logger.LogInformation("Migrated postresql database.");
