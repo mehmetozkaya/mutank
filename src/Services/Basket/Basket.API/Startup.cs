@@ -40,7 +40,7 @@ namespace Basket.API
             //AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
 
             services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
-                        (o => o.Address = new Uri(Configuration["GrpcConfigs:DiscountUrl"]));
+                        (o => o.Address = new Uri(Configuration["GrpcSettings:DiscountUrl"]));
 
             services.AddScoped<DiscountGrpcService>();
 
