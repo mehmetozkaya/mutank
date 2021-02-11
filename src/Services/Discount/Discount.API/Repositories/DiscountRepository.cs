@@ -18,11 +18,14 @@ namespace Discount.API.Repositories
         }       
 
         public async Task<Coupon> GetDiscount(string productName)
-        {
+        {            
             using var connection = new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
-            
-            var coupon = await connection.QueryFirstAsync<Coupon>
+
+            var coupon = await connection.QueryFirstOrDefaultAsync<Coupon>
                 ("SELECT * FROM Coupon WHERE ProductName = @ProductName", new { ProductName = productName });
+
+            if (coupon == null)
+                return new Coupon { Amount = 0 };
             return coupon;
         }
 
