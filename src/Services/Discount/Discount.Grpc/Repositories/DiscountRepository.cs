@@ -25,7 +25,7 @@ namespace Discount.Grpc.Repositories
                 ("SELECT * FROM Coupon WHERE ProductName = @ProductName", new { ProductName = productName });
 
             if (coupon == null)
-                return new Coupon { Amount = 0 };
+                return new Coupon { ProductName = "No Discount", Amount = 0, Description = "No Discount Desc" };
             return coupon;
         }
 
