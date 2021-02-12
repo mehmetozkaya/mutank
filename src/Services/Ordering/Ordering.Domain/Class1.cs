@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ordering.Core
+namespace Ordering.Domain
 {
     public class Class1
     {
