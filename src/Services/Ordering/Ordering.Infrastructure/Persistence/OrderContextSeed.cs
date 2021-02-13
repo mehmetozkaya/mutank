@@ -1,40 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Ordering.Domain.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Ordering.Infrastructure.Persistence
 {
     public class OrderContextSeed
     {
-        public static async Task SeedAsync(OrderContext orderContext, ILoggerFactory loggerFactory, int? retry = 0)
-        {
-            int retryForAvailability = retry.Value;
-
-            try
+        public static async Task SeedAsync(OrderContext orderContext, ILogger<OrderContextSeed> logger)
+        {            
+            if (!orderContext.Orders.Any())
             {
-                orderContext.Database.Migrate();
-
-                if (!orderContext.Orders.Any())
-                {
-                    orderContext.Orders.AddRange(GetPreconfiguredOrders());
-                    await orderContext.SaveChangesAsync();
-                }
-            }
-            catch (Exception exception)
-            {
-                if (retryForAvailability < 50)
-                {
-                    retryForAvailability++;
-                    var log = loggerFactory.CreateLogger<OrderContextSeed>();
-                    log.LogError(exception.Message);
-                    System.Threading.Thread.Sleep(2000);
-                    await SeedAsync(orderContext, loggerFactory, retryForAvailability);
-                }
+                orderContext.Orders.AddRange(GetPreconfiguredOrders());
+                await orderContext.SaveChangesAsync();
+                logger.LogInformation("Seed database associated with context {DbContextName}", typeof(OrderContext).Name);
             }
         }
 
