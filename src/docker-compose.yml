@@ -10,8 +10,11 @@ services:
   discountdb:
     image: postgres
 
+  orderdb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4  
 
   portainer:
     image: portainer/portainer-ce
