@@ -83,6 +83,7 @@ services:
       - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - basketdb
+      - rabbitmq
     ports:
       - "8001:80"
 
@@ -114,5 +115,6 @@ services:
         - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
         - orderdb
+        - rabbitmq
     ports:
         - "8004:80"
