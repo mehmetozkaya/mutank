@@ -47,7 +47,7 @@ namespace Catalog.API.Controllers
             return Ok(product);
         }
 
-        [Route("[action]/{category}")]
+        [Route("[action]/{category}", Name = "GetProductByCategory")]
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Product>), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<IEnumerable<Product>>> GetProductByCategory(string category)
@@ -72,7 +72,7 @@ namespace Catalog.API.Controllers
             return Ok(await _repository.UpdateProduct(product));
         }
 
-        [HttpDelete("{id:length(24)}")]
+        [HttpDelete("{id:length(24)}", Name = "DeleteProduct")]        
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> DeleteProductById(string id)
         {
