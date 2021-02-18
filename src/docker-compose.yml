@@ -56,7 +56,13 @@ services:
     image: ${DOCKER_REGISTRY-}ocelotapigw
     build:
       context: .
-      dockerfile: ApiGateways/OcelotApiGw/Dockerfile
+      dockerfile: ApiGateways/OcelotApiGw/Dockerfile  
+
+  shopping.aggregator:
+    image: ${DOCKER_REGISTRY-}shoppingaggregator
+    build:
+      context: .
+      dockerfile: ApiGateways/Shopping.Aggregator/Dockerfile
 
   aspnetrunbasics:
     image: ${DOCKER_REGISTRY-}aspnetrunbasics
@@ -69,3 +75,4 @@ volumes:
   portainer_data:
   postgres_data:
   pgadmin_data:
+
