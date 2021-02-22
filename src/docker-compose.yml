@@ -76,10 +76,6 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:7.9.2
 
-networks:
-  elastic:
-    driver: bridge
-
 volumes:
   mongo_data:
   portainer_data:
